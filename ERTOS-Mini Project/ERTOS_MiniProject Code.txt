@@ -1,0 +1,84 @@
+#include<LiquidCrystal.h>
+#define fan 9
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+float temp;
+int tempPin=A1;
+
+void setup()
+{
+ //Giving fan current...making fan pin 9 for output
+ pinMode(fan, OUTPUT);
+ //Setting LCD's number of rows and columns and rows:
+ lcd.begin(16, 3);
+ // Printing Message On the LCD
+ lcd.setCursor(1, 1);
+
+ lcd.print(" Hello!");
+ delay(2000);
+ lcd.clear();
+}
+
+void loop()
+{
+	lcd.setCursor(3, 0);
+	lcd.print("Recording");
+	lcd.setCursor(2, 1);
+	lcd.print("Temperature...");
+	delay(3000);
+	lcd.clear();
+	lcd.setCursor(0, 2);
+	temp = analogRead(tempPin);
+	temp = (temp * 0.48828125) - 50 ; //Converting Temperature
+	lcd.setCursor(0, 0);
+    lcd.print("Temperature= ");
+    lcd.setCursor(5, 1);
+	lcd.print(temp); //Printing Temp
+	delay(3000);
+	lcd.clear();
+	
+	if (temp < 20)
+	{
+	  analogWrite(9, 0);
+	  lcd.print("Fan Off");
+	  delay(2000);
+	  lcd.clear();
+	}
+	else if (temp <= 22)
+	{
+	  analogWrite(fan, 51);
+	  lcd.print("Fan Speed: 20%  ");
+	  delay(2000);
+	  lcd.clear();
+	}
+	else if (temp <= 24)
+	{
+	  analogWrite(fan, 102);
+	  lcd.print("Fan Speed: 40%  ");
+	  delay(2000);
+	  lcd.clear();
+	}
+	else if (temp <= 26)
+	{
+	  analogWrite(fan, 153);
+	  lcd.print("Fan Speed: 60%  ");
+	  delay(2000);
+	  lcd.clear();
+	}
+	else if (temp <= 29)
+	{
+	  analogWrite(fan, 200);
+	  lcd.print("Fan Speed: 80%  ");
+	  delay(2000);
+	  lcd.clear();
+	}
+	else if (temp >= 30)
+	{
+	  analogWrite(fan, 255);
+	  lcd.print("Fan Speed: 100%  ");
+	  delay(2000);
+	  lcd.clear();
+	}
+}
+
